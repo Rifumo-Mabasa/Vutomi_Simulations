@@ -20,7 +20,7 @@ export default async function handler(req, res) {
     // Send the email
     const data = await resend.emails.send({
       from: 'Contact Form <onboarding@resend.dev>', // See note below about domains
-      to: ['rifumomabasa1@gmail.com'], // Where you want to receive the messages
+      to: ['Vutomi@mabparkholdings.com'], // Where you want to receive the messages
       subject: `New Inquiry from ${name}`,
       reply_to: email, // So you can hit 'reply' in your inbox
       html: `
