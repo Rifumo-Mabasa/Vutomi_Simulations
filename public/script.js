@@ -1,6 +1,13 @@
 document.addEventListener('DOMContentLoaded', () => {
     const contactForm = document.getElementById('contact-form');
     const responseMsg = document.getElementById('response-msg');
+    const menu = document.querySelector('#mobile-menu');
+const menuLinks = document.querySelector('.nav-links');
+
+menu.addEventListener('click', function() {
+    menuLinks.classList.toggle('active');
+    menu.classList.toggle('is-active'); // For animating the hamburger to an 'X'
+});
 
     if (!contactForm) return;
 

@@ -31,7 +31,29 @@ body {
     backdrop-filter: blur(10px); /* Modern frosted glass effect */
     z-index: 1000;
 }
+/* Mobile Styles */
+@media (max-width: 768px) {
+    .navbar {
+        padding: 0 5%; /* Reduce padding so it doesn't look cramped */
+    }
 
+    .nav-links {
+        display: none; /* Hide links by default on mobile */
+        flex-direction: column;
+        position: absolute;
+        top: 80px;
+        left: 0;
+        width: 100%;
+        background: rgba(15, 15, 15, 0.98);
+        padding: 20px;
+        text-align: center;
+    }
+
+    /* Class to toggle visibility via JavaScript */
+    .nav-links.active {
+        display: flex;
+    }
+}
 .logo-img {
     height: 90px; /* Scaled down for the navbar */
     width: auto;
