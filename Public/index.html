@@ -141,19 +141,25 @@
             <p>For custom corporate packages or general inquiries, send us a message below.</p>
             
             <!-- Added id="contact-form" -->
-<form id="contact-form" class="inquiry-form">
-    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin-bottom: 20px;">
-        <!-- The 'name' attribute is used by FormData to create the JSON keys -->
-        <input type="text" name="name" placeholder="Name" required style="...">
-        <input type="email" name="email" placeholder="Email" required style="...">
+<form action="#" method="POST" id="contact-form" class="inquiry-form">
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; margin-bottom: 20px;">
+        <!-- Added id="name" -->
+        <input type="text" name="name" id="name" placeholder="Name" required 
+               style="padding: 12px; border-radius: 5px; border: 1px solid rgba(255,255,255,0.2); background: rgba(255,255,255,0.05); color: white;">
+        
+        <!-- Added id="email" -->
+        <input type="email" name="email" id="email" placeholder="Email" required 
+               style="padding: 12px; border-radius: 5px; border: 1px solid rgba(255,255,255,0.2); background: rgba(255,255,255,0.05); color: white;">
     </div>
-    
-    <textarea name="message" placeholder="How can we help?" rows="5" required style="..."></textarea>
+
+    <!-- Added id="message" -->
+    <textarea name="message" id="message" placeholder="How can we help your team?" rows="5" required 
+              style="width: 100%; padding: 12px; border-radius: 5px; border: 1px solid rgba(255,255,255,0.2); background: rgba(255,255,255,0.05); color: white; margin-bottom: 20px;"></textarea>
     
     <button type="submit" class="btn">Send Message</button>
     
-    <!-- This is where the status text will appear -->
-    <div id="response-msg" style="margin-top: 15px; font-size: 14px;"></div>
+    <!-- Added this div to show the "Sending..." or "Success" text -->
+    <div id="response-msg" style="margin-top: 15px; font-weight: bold;"></div>
 </form>
         </div>
     </section>
@@ -207,6 +213,7 @@
             </div>
         </div>
     </footer>
+    <script src="script.js"></script>
 
 </body>
 </html>

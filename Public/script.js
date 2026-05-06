@@ -1,67 +1,62 @@
-/**
- * CONTACT FORM HANDLING
- */
 document.addEventListener('DOMContentLoaded', () => {
     const contactForm = document.getElementById('contact-form');
     const responseMsg = document.getElementById('response-msg');
 
-    if (contactForm) {
-        contactForm.addEventListener('submit', async (e) => {
-            e.preventDefault();
+    if (!contactForm) return;
 
-            // 1. UI Feedback: Identify elements and disable button
-            const submitBtn = contactForm.querySelector('button[type="submit"]');
-            const originalBtnText = submitBtn.textContent;
-            
-            submitBtn.disabled = true;
-            submitBtn.textContent = "Processing...";
+    contactForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
 
-            if (responseMsg) {
-                responseMsg.innerText = "Sending your message...";
-                responseMsg.style.color = "#ffa500"; // Orange
-            }
+        const submitBtn = contactForm.querySelector('button[type="submit"]');
+        const originalBtnText = submitBtn.textContent;
+        
+        // UI Lockdown
+        submitBtn.disabled = true;
+        submitBtn.textContent = "Processing...";
+        if (responseMsg) {
+            responseMsg.innerText = "Sending your message...";
+            responseMsg.style.color = "#ffa500";
+        }
 
-            // 2. Data Collection
-            // Using FormData is cleaner than grabbing each ID individually
-            const rawData = new FormData(contactForm);
-            const formData = Object.fromEntries(rawData.entries());
+        const rawData = new FormData(contactForm);
+        const formData = Object.fromEntries(rawData.entries());
 
-            try {
-                // 3. API Call to Vercel Serverless Function
-                const response = await fetch('/api/contact', {
-                    method: 'POST',
-                    headers: { 
-                        'Content-Type': 'application/json',
-                        'Accept': 'application/json'
-                    },
-                    body: JSON.stringify(formData),
-                });
+        // Simple Bot Check (if you add the hidden input)
+        if (formData._honey) return;
 
-                const result = await response.json();
+        try {
+            const response = await fetch('/api/contact', {
+                method: 'POST',
+                headers: { 
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                },
+                body: JSON.stringify(formData),
+            });
 
-                if (response.ok) {
-                    // Success State
-                    if (responseMsg) {
-                        responseMsg.innerText = "🚀 Message sent successfully!";
-                        responseMsg.style.color = "#4CAF50"; // Green
-                    }
-                    contactForm.reset();
-                } else {
-                    // Server-side Error (e.g., validation failed)
-                    throw new Error(result.message || "Server error occurred");
-                }
-            } catch (error) {
-                // Network or Logic Error
-                console.error("Submission error:", error);
+            // Parse JSON only if the response is actually JSON
+            const isJson = response.headers.get('content-type')?.includes('application/json');
+            const result = isJson ? await response.json() : null;
+
+            if (response.ok) {
                 if (responseMsg) {
-                    responseMsg.innerText = "❌ Oops! Something went wrong. Please try again.";
-                    responseMsg.style.color = "#f44336"; // Red
+                    responseMsg.innerText = "🚀 Message sent successfully!";
+                    responseMsg.style.color = "#4CAF50";
                 }
-            } finally {
-                // 4. Reset Button State
-                submitBtn.disabled = false;
-                submitBtn.textContent = originalBtnText;
+                contactForm.reset();
+            } else {
+                // Check if the server sent a specific error message
+                throw new Error(result?.message || `Error: ${response.status}`);
             }
-        });
-    }
+        } catch (error) {
+            console.error("Submission error:", error);
+            if (responseMsg) {
+                responseMsg.innerText = `❌ ${error.message || "Something went wrong. Please try again."}`;
+                responseMsg.style.color = "#f44336";
+            }
+        } finally {
+            submitBtn.disabled = false;
+            submitBtn.textContent = originalBtnText;
+        }
+    });
 });
