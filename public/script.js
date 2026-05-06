@@ -1,69 +1,86 @@
 document.addEventListener('DOMContentLoaded', () => {
+    // --- MOBILE MENU LOGIC ---
+    const menu = document.querySelector('#mobile-menu');
+    const menuLinks = document.querySelector('.nav-links');
+
+    // Only add listener if elements exist to avoid console errors
+    if (menu && menuLinks) {
+        menu.addEventListener('click', () => {
+            menuLinks.classList.toggle('active');
+            menu.classList.toggle('is-active');
+        });
+
+        // Close menu when a link is clicked (improves mobile UX)
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.addEventListener('click', () => {
+                menuLinks.classList.remove('active');
+                menu.classList.remove('is-active');
+            });
+        });
+    }
+
+    // --- CONTACT FORM LOGIC ---
     const contactForm = document.getElementById('contact-form');
     const responseMsg = document.getElementById('response-msg');
-    const menu = document.querySelector('#mobile-menu');
-const menuLinks = document.querySelector('.nav-links');
 
-menu.addEventListener('click', function() {
-    menuLinks.classList.toggle('active');
-    menu.classList.toggle('is-active'); // For animating the hamburger to an 'X'
-});
+    if (contactForm) {
+        contactForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
 
-    if (!contactForm) return;
-
-    contactForm.addEventListener('submit', async (e) => {
-        e.preventDefault();
-
-        const submitBtn = contactForm.querySelector('button[type="submit"]');
-        const originalBtnText = submitBtn.textContent;
-        
-        // UI Lockdown
-        submitBtn.disabled = true;
-        submitBtn.textContent = "Processing...";
-        if (responseMsg) {
-            responseMsg.innerText = "Sending your message...";
-            responseMsg.style.color = "#ffa500";
-        }
-
-        const rawData = new FormData(contactForm);
-        const formData = Object.fromEntries(rawData.entries());
-
-        // Simple Bot Check (if you add the hidden input)
-        if (formData._honey) return;
-
-        try {
-            const response = await fetch('/api/contact', {
-                method: 'POST',
-                headers: { 
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json'
-                },
-                body: JSON.stringify(formData),
-            });
-
-            // Parse JSON only if the response is actually JSON
-            const isJson = response.headers.get('content-type')?.includes('application/json');
-            const result = isJson ? await response.json() : null;
-
-            if (response.ok) {
-                if (responseMsg) {
-                    responseMsg.innerText = "🚀 Message sent successfully!";
-                    responseMsg.style.color = "#4CAF50";
-                }
-                contactForm.reset();
-            } else {
-                // Check if the server sent a specific error message
-                throw new Error(result?.message || `Error: ${response.status}`);
-            }
-        } catch (error) {
-            console.error("Submission error:", error);
+            const submitBtn = contactForm.querySelector('button[type="submit"]');
+            const originalBtnText = submitBtn.textContent;
+            
+            // UI Feedback
+            submitBtn.disabled = true;
+            submitBtn.textContent = "Processing...";
             if (responseMsg) {
-                responseMsg.innerText = `❌ ${error.message || "Something went wrong. Please try again."}`;
-                responseMsg.style.color = "#f44336";
+                responseMsg.innerText = "Sending your message...";
+                responseMsg.style.color = "#ffa500"; // Orange
             }
-        } finally {
-            submitBtn.disabled = false;
-            submitBtn.textContent = originalBtnText;
-        }
-    });
+
+            const rawData = new FormData(contactForm);
+            const formData = Object.fromEntries(rawData.entries());
+
+            // Honeypot Bot Check
+            if (formData._honey) {
+                console.warn("Spam detected");
+                return;
+            }
+
+            try {
+                // Ensure the path matches your api folder structure (lowercase)
+                const response = await fetch('/api/contact', {
+                    method: 'POST',
+                    headers: { 
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    },
+                    body: JSON.stringify(formData),
+                });
+
+                const isJson = response.headers.get('content-type')?.includes('application/json');
+                const result = isJson ? await response.json() : null;
+
+                if (response.ok) {
+                    if (responseMsg) {
+                        responseMsg.innerText = "🚀 Message sent successfully!";
+                        responseMsg.style.color = "#4CAF50"; // Green
+                    }
+                    contactForm.reset();
+                } else {
+                    // This handles the 405 error if it comes from the server
+                    throw new Error(result?.message || `Status ${response.status}: Method not allowed or path incorrect.`);
+                }
+            } catch (error) {
+                console.error("Submission error:", error);
+                if (responseMsg) {
+                    responseMsg.innerText = `❌ ${error.message}`;
+                    responseMsg.style.color = "#f44336"; // Red
+                }
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.textContent = originalBtnText;
+            }
+        });
+    }
 });
