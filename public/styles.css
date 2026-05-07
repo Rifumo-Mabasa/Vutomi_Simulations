@@ -17,60 +17,94 @@ body {
     padding-top: 80px; /* Prevents hero content from going under the fixed navbar */
 }
 
-/* Navigation */
+/* --- NAVBAR BASE --- */
 .navbar {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 0 10%;
+    padding: 0 8%;
     position: fixed;
     width: 100%;
     height: 80px;
     top: 0;
     background: rgba(15, 15, 15, 0.95);
-    backdrop-filter: blur(10px); /* Modern frosted glass effect */
+    backdrop-filter: blur(10px);
     z-index: 1000;
+    transition: height 0.3s ease, padding 0.3s ease;
 }
+
+.logo-img {
+    height: 70px;
+    width: auto;
+}
+
+.nav-links {
+    display: flex;
+    list-style: none;
+    gap: 2rem;
+}
+
+.nav-links a {
+    text-decoration: none;
+    color: #ccc;
+    font-weight: 500;
+    transition: color 0.3s ease;
+}
+
+.nav-links a:hover {
+    color: #d1643d;
+}
+
+/* --- TABLET (≤1024px) --- */
+@media (max-width: 1024px) {
+    .navbar {
+        height: 70px;
+        padding: 0 6%;
+    }
+
+    .logo-img {
+        height: 55px;
+    }
+
+    .nav-links {
+        gap: 1.5rem;
+    }
+}
+
+/* --- MOBILE (≤768px) --- */
 @media (max-width: 768px) {
     .navbar {
-        height: 60px; /* Reduced from 80px to save vertical space */
+        height: 60px;
         padding: 0 5%;
     }
 
     .logo-img {
-        height: 45px; /* Scale logo down significantly for mobile */
+        height: 45px;
     }
 
-    /* Transform the links into a full-screen overlay */
+    /* Full-screen overlay menu */
     .nav-links {
-        display: none; /* Hidden by default */
+        display: none;
         position: fixed;
         top: 0;
         left: 0;
         width: 100%;
-        height: 100vh; /* Takes up the whole screen ONLY when open */
+        height: 100vh;
         background: rgba(15, 15, 15, 0.98);
         flex-direction: column;
         justify-content: center;
         align-items: center;
+        gap: 25px;
         z-index: 2000;
     }
 
     .nav-links.active {
-        display: flex; /* Show when toggled */
+        display: flex;
     }
 
-    /* Reset the hero padding to match the new slimmer navbar */
-    body {
-        padding-top: 60px; 
+    .nav-links a {
+        font-size: 1.2rem;
     }
-}
-/* --- RESPONSIVE REFINEMENTS --- */
-
-/* 1. Ensure images don't break layouts */
-img {
-    max-width: 100%;
-    height: auto;
 }
 
 /* 2. Tablet & Small Desktop (Max 1024px) */
