@@ -133,6 +133,15 @@ body {
     color: #000;
     transform: translateY(-2px);
 }
+#board-game {
+    position: absolute;
+    vertical-align: middle;
+    right: 10%;
+    width: 500px;
+    height: auto;
+    opacity: 0.8;
+    z-index: 1;
+}
 
 /* Sections Base */
 .portfolio, .contact, .about {
@@ -319,12 +328,6 @@ body {
     display: flex;
     align-items: center;
     gap: 30px;
-}
-
-.qr-code {
-    width: 85px;
-    border: 2px solid white;
-    border-radius: 4px;
 }
 
 .footer-divider {
