@@ -31,29 +31,122 @@ body {
     backdrop-filter: blur(10px); /* Modern frosted glass effect */
     z-index: 1000;
 }
-/* Mobile Styles */
-@media (max-width: 768px) {
-    .navbar {
-        padding: 0 5%; /* Reduce padding so it doesn't look cramped */
+/* --- RESPONSIVE REFINEMENTS --- */
+
+/* 1. Ensure images don't break layouts */
+img {
+    max-width: 100%;
+    height: auto;
+}
+
+/* 2. Tablet & Small Desktop (Max 1024px) */
+@media (max-width: 1024px) {
+    .hero {
+        flex-direction: column;
+        justify-content: center;
+        text-align: center;
+        padding: 40px 5%;
     }
 
+    .hero-content {
+        max-width: 100%;
+        margin-bottom: 50px;
+    }
+
+    /* Move the board game below the text on tablets */
+    #board-game {
+        position: relative;
+        right: auto;
+        width: 80%;
+        max-width: 400px;
+        margin: 0 auto;
+        opacity: 1; /* Increase opacity for better visibility on mobile */
+    }
+
+    .portfolio-grid {
+        grid-template-columns: repeat(2, 1fr); /* 2 columns for tablets */
+    }
+
+    .contact-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+/* 3. Mobile Phones (Max 768px) */
+@media (max-width: 768px) {
+    body {
+        padding-top: 70px; /* Smaller header space */
+    }
+
+    /* Typography scaling */
+    .hero-content h1 {
+        font-size: 2.2rem;
+        margin-bottom: 20px;
+    }
+
+    .hero-content p {
+        font-size: 1rem;
+    }
+
+    .logo-image {
+        height: 180px; /* Scale down the hero logo */
+    }
+
+    /* Navbar Mobile Toggle (Matches your existing logic) */
     .nav-links {
-        display: none; /* Hide links by default on mobile */
+        display: none;
         flex-direction: column;
         position: absolute;
         top: 80px;
         left: 0;
         width: 100%;
         background: rgba(15, 15, 15, 0.98);
-        padding: 20px;
+        padding: 40px 0;
+        gap: 20px;
+    }
+
+    .nav-links.active {
+        display: flex;
+    }
+
+    .nav-links li {
+        margin-left: 0;
+    }
+
+    /* Layout adjustments */
+    .portfolio-grid, 
+    .contact-grid,
+    .form-group-row {
+        grid-template-columns: 1fr; /* Stack everything in 1 column */
+    }
+
+    .footer-top {
+        flex-direction: column;
+        align-items: center;
         text-align: center;
     }
+
+    .footer-cta {
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    #board-game {
+        width: 100%; /* Full width on tiny screens */
+        max-width: 320px;
+    }
+
+    /* About Section scaling */
+    .section-title h2 {
+        font-size: 2rem;
+    }
+}
 
     /* Class to toggle visibility via JavaScript */
     .nav-links.active {
         display: flex;
     }
-}
+
 .logo-img {
     height: 90px; /* Scaled down for the navbar */
     width: auto;
