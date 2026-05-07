@@ -31,6 +31,40 @@ body {
     backdrop-filter: blur(10px); /* Modern frosted glass effect */
     z-index: 1000;
 }
+@media (max-width: 768px) {
+    .navbar {
+        height: 60px; /* Reduced from 80px to save vertical space */
+        padding: 0 5%;
+    }
+
+    .logo-img {
+        height: 45px; /* Scale logo down significantly for mobile */
+    }
+
+    /* Transform the links into a full-screen overlay */
+    .nav-links {
+        display: none; /* Hidden by default */
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100vh; /* Takes up the whole screen ONLY when open */
+        background: rgba(15, 15, 15, 0.98);
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        z-index: 2000;
+    }
+
+    .nav-links.active {
+        display: flex; /* Show when toggled */
+    }
+
+    /* Reset the hero padding to match the new slimmer navbar */
+    body {
+        padding-top: 60px; 
+    }
+}
 /* --- RESPONSIVE REFINEMENTS --- */
 
 /* 1. Ensure images don't break layouts */

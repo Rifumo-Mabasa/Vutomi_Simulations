@@ -84,3 +84,10 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 });
+// Example: Assuming you add a <div class="menu-toggle"></div> to your HTML
+const menuToggle = document.querySelector('.menu-toggle');
+const navLinks = document.querySelector('.nav-links');
+
+menuToggle.addEventListener('click', () => {
+    navLinks.classList.toggle('active');
+});
