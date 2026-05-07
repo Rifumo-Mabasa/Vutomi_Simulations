@@ -53,15 +53,51 @@ img {
         margin-bottom: 50px;
     }
 
-    /* Move the board game below the text on tablets */
-    #board-game {
-        position: relative;
-        right: auto;
-        width: 80%;
-        max-width: 400px;
-        margin: 0 auto;
-        opacity: 1; /* Increase opacity for better visibility on mobile */
+/* --- BOARD GAME POSITIONING --- */
+
+/* 1. Desktop Default (Wide Screens) */
+#board-game {
+    position: absolute;
+    right: 10%;
+    top: 50%;
+    transform: translateY(-50%); /* Perfectly centers it vertically in the hero */
+    width: 500px;
+    height: auto;
+    opacity: 0.8;
+    z-index: 1;
+}
+
+/* 2. Tablet & Mobile (Prevents overlapping) */
+@media (max-width: 1024px) {
+    .hero {
+        flex-direction: column; /* Stacks text and image vertically */
+        height: auto;
+        padding-top: 120px; /* Gives extra room for the fixed navbar */
+        text-align: center;
     }
+
+    #board-game {
+        position: relative; /* Removes it from the "floating" layer */
+        right: auto;
+        top: auto;
+        transform: none;
+        width: 90%;
+        max-width: 450px;
+        margin: 40px auto 0; /* Adds space above the image */
+        opacity: 1;
+        display: block;
+    }
+}
+
+@media (max-width: 768px) {
+    #board-game {
+        max-width: 320px;
+    }
+    
+    .hero {
+        padding-top: 100px; /* Slightly less padding on mobile */
+    }
+}
 
     .portfolio-grid {
         grid-template-columns: repeat(2, 1fr); /* 2 columns for tablets */
